@@ -1,4 +1,4 @@
-// dashboard.js - Módulo de Dashboard (Admin e Staff) - COM EXPORT PDF
+// dashboard.js - Módulo de Dashboard (Admin e Staff) - COM EXPORT PDF E BUSCA
 
 const Dashboard = {
   render() {
@@ -155,8 +155,30 @@ const Dashboard = {
     const section = DOM.create("section", { className: "section" });
     section.appendChild(DOM.createTitle("Robôs Cadastrados"));
 
+    // Campo de busca
+    const searchContainer = DOM.create("div", {
+      style: {
+        marginBottom: "20px",
+        display: "flex",
+        gap: "10px",
+        alignItems: "center",
+      },
+    });
+
+    searchContainer.innerHTML = `
+      <input 
+        type="text" 
+        id="searchRobo" 
+        placeholder="🔍 Buscar por nome do robô ou equipe..."
+        style="flex: 1; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px;"
+      >
+      <button id="btnLimparBusca" class="btn-edit" style="padding: 10px 20px;">Limpar</button>
+    `;
+
+    section.appendChild(searchContainer);
+
     let tableHtml = `
-      <table>
+      <table id="robosTable">
         <thead>
           <tr>
             <th>Foto</th>
@@ -167,7 +189,7 @@ const Dashboard = {
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="robosTableBody">
     `;
 
     Object.entries(robos).forEach(([nome, robo]) => {
@@ -181,7 +203,9 @@ const Dashboard = {
         robo.classe === "Ant" ? "🐜" : robo.classe === "Cupim" ? "🪲" : "";
 
       tableHtml += `
-        <tr>
+        <tr data-nome="${DOM.escape(nome)}" data-equipe="${DOM.escape(
+        robo.equipe || ""
+      )}">
           <td>${img}</td>
           <td>
             <strong>${DOM.escape(nome)}</strong><br>
@@ -211,6 +235,54 @@ const Dashboard = {
 
     tableHtml += `</tbody></table>`;
     section.innerHTML += tableHtml;
+
+    // Event listeners para busca
+    setTimeout(() => {
+      const searchInput = document.getElementById("searchRobo");
+      const btnLimparBusca = document.getElementById("btnLimparBusca");
+
+      // Função de filtro
+      const filtrarRobos = () => {
+        const termo = searchInput.value.toLowerCase().trim();
+        const tbody = document.getElementById("robosTableBody");
+        const linhas = tbody.getElementsByTagName("tr");
+
+        let encontrados = 0;
+
+        for (let linha of linhas) {
+          const nome = linha.getAttribute("data-nome").toLowerCase();
+          const equipe = linha.getAttribute("data-equipe").toLowerCase();
+
+          if (nome.includes(termo) || equipe.includes(termo)) {
+            linha.style.display = "";
+            encontrados++;
+          } else {
+            linha.style.display = "none";
+          }
+        }
+
+        // Atualiza contador (opcional)
+        if (termo && encontrados === 0) {
+          toast.info("Nenhum robô encontrado com esse nome ou equipe.");
+        }
+      };
+
+      // Busca em tempo real
+      searchInput.addEventListener("input", filtrarRobos);
+
+      // Limpar busca
+      btnLimparBusca.onclick = () => {
+        searchInput.value = "";
+        filtrarRobos();
+      };
+
+      // Buscar com Enter
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          filtrarRobos();
+        }
+      });
+    }, 0);
 
     return section;
   },
