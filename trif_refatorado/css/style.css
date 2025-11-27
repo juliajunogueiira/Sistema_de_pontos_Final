@@ -8,7 +8,7 @@
   --text: #1f2937;
   --muted: #6b7280;
   --border: #e5e7eb;
-  /* BotÃµes e Status */
+  /* Botões e Status */
   --button-bg: #10b981;
   --button-hover: #059669;
   --danger: #ef4444;
@@ -19,7 +19,7 @@
   --success-hover: #059669;
   --warning: #f59e0b;
   --warning-hover: #d97706;
-  /* DimensÃµes */
+  /* Dimensões */
   --radius: 12px;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -128,7 +128,7 @@ header h1 {
   overflow: auto;
 }
 
-/* Menu de NavegaÃ§Ã£o (Barra Lateral no Desktop) */
+/* Menu de Navegação (Barra Lateral no Desktop) */
 #menu {
   width: 260px;
   flex-shrink: 0;
@@ -172,7 +172,7 @@ header h1 {
   outline-offset: 2px;
 }
 
-/* Area de ConteÃºdo */
+/* Area de Conteúdo */
 #content {
   flex: 1;
   min-width: 0;
@@ -293,7 +293,7 @@ tbody tr:hover {
   background: #f9fafb;
 }
 
-/* Estilo para a miniatura do robÃ´ */
+/* Estilo para a miniatura do robô */
 .robo-thumb {
   width: 50px;
   height: 50px;
@@ -354,7 +354,13 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* variantes de botÃ£o */
+/* Borda para botões selecionados/ativos */
+button.selected:not(.hamburger):not(#menu button) {
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* variantes de botão */
 .btn-danger {
   background: linear-gradient(180deg, var(--danger), var(--danger-hover));
 }
@@ -391,7 +397,7 @@ button:focus-visible {
   pointer-events: auto;
 }
 
-/* NotificaÃ§Ãµes Toast */
+/* Notificações Toast */
 .toast-container {
   position: fixed;
   top: 80px;
@@ -436,6 +442,7 @@ button:focus-visible {
     transform: translateX(400px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -457,7 +464,7 @@ button:focus-visible {
   margin-top: 20px;
 }
 
-/* InspeÃ§Ã£o: Layout do Item */
+/* Inspeção: Layout do Item */
 .inspection-item {
   display: flex;
   flex-direction: column;
@@ -504,11 +511,13 @@ button:focus-visible {
   background: var(--info);
   color: var(--accent-contrast);
   border-color: var(--info-hover);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  border-width: 3px;
 }
 
 .btn-agressividade.selected:hover {
   background: var(--info-hover);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
 .btn-reverter {
@@ -521,6 +530,7 @@ button:focus-visible {
   .agressividade-selector {
     gap: 6px;
   }
+
   .btn-agressividade {
     padding: 8px 10px;
     font-size: 14px;
@@ -554,7 +564,7 @@ button:focus-visible {
 }
 
 .round-card.completed h4::after {
-  content: "âœ“";
+  content: "✓";
   background: var(--success);
   color: white;
   width: 24px;
