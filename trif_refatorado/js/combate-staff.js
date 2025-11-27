@@ -237,20 +237,20 @@ const CombateStaff = {
       `;
     } else if (partida.status === "finalizada") {
       progressoHtml = `
-        <div style="margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.2); border: 2px solid #10b981; border-radius: 8px;">
-          <p style="margin: 0 0 8px 0; font-weight: 700; font-size: 14px; color: #065f46;">
+        <div style="margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.2); border: 2px solid #ffff; border-radius: 8px;">
+          <p style="margin: 0 0 8px 0; font-weight: 700; font-size: 14px; color: #ffff;">
             ✅ Dano Consensual: ${partida.danoConsensual?.danoR1 || 0} vs ${
         partida.danoConsensual?.danoR2 || 0
       }<br>
             👤 Definido por: Jurado ${partida.juradoResponsavelDano}
           </p>
-          <div style="display: flex; gap: 16px; justify-content: center; font-size: 13px; color: #047857;">
+          <div style="display: flex; gap: 16px; justify-content: center; font-size: 13px; color: #ffff;">
             <span>${DOM.escape(partida.robo1)}: ${
         partida.danoConsensual?.pontosDanoR1 || 0
-      } pts</span>
+      } PTS</span>
             <span>${DOM.escape(partida.robo2)}: ${
         partida.danoConsensual?.pontosDanoR2 || 0
-      } pts</span>
+      } PTS</span>
           </div>
         </div>
       `;
