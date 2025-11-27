@@ -82,28 +82,35 @@ const CombateJurado = {
 
     let html = `
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-        <h3 style="margin: 0 0 8px 0; color: white;">⚔️ ${DOM.escape(this.partidaAtual.robo1)} vs ${DOM.escape(this.partidaAtual.robo2)}</h3>
-        <p style="margin: 0; opacity: 0.9;">ID da Partida: ${this.partidaAtual.id}</p>
+        <h3 style="margin: 0 0 8px 0; color: white;">⚔️ ${DOM.escape(
+          this.partidaAtual.robo1
+        )} vs ${DOM.escape(this.partidaAtual.robo2)}</h3>
+        <p style="margin: 0; opacity: 0.9;">ID da Partida: ${
+          this.partidaAtual.id
+        }</p>
       </div>
     `;
 
     // Verifica se é o jurado responsável por definir o dano
     const isResponsavelDano = dataManager.isJuradoResponsavelDano(
-      this.partidaAtual.id, 
+      this.partidaAtual.id,
       this.juradoId
     );
 
     // CASO 1: Jurado responsável pelo dano e dano ainda não definido
     if (isResponsavelDano && !this.partidaAtual.danoConsensual) {
       html += this.renderFormularioDefinicaoDano();
-    } 
+    }
     // CASO 2: Dano já definido - Mostrar dano e permitir visualização
     else if (this.partidaAtual.danoConsensual) {
       html += this.renderDanoFixo();
       html += this.renderRound(julgamentosFeitos, true); // true = modo visualização
     }
     // CASO 3: Aguardando outro jurado definir o dano
-    else if (this.partidaAtual.status === "aguardando_dano" && !isResponsavelDano) {
+    else if (
+      this.partidaAtual.status === "aguardando_dano" &&
+      !isResponsavelDano
+    ) {
       html += this.renderAguardandoDano();
     }
     // CASO 4: Modo normal - julgar agressividade
@@ -117,9 +124,12 @@ const CombateJurado = {
     // Event listeners
     if (isResponsavelDano && !this.partidaAtual.danoConsensual) {
       setTimeout(() => {
-        document.getElementById("btnDefinirDano").onclick = () => this.definirDanoConsensual();
-        document.getElementById("danoR1").onchange = () => this.atualizarPreviewDano();
-        document.getElementById("danoR2").onchange = () => this.atualizarPreviewDano();
+        document.getElementById("btnDefinirDano").onclick = () =>
+          this.definirDanoConsensual();
+        document.getElementById("danoR1").onchange = () =>
+          this.atualizarPreviewDano();
+        document.getElementById("danoR2").onchange = () =>
+          this.atualizarPreviewDano();
         this.atualizarPreviewDano();
       }, 0);
     } else if (!this.partidaAtual.danoConsensual) {
@@ -133,7 +143,9 @@ const CombateJurado = {
         const selector = document.getElementById(`agressividadeSelector_1`);
         if (selector) {
           selector.querySelectorAll(".btn-agressividade").forEach((btn) => {
-            btn.addEventListener("click", () => this.selecionarAgressividade(btn));
+            btn.addEventListener("click", () =>
+              this.selecionarAgressividade(btn)
+            );
           });
         }
       }, 0);
@@ -155,15 +167,23 @@ const CombateJurado = {
 
         <div class="form-grid" style="margin-bottom: 16px;">
           <div>
-            <label style="font-weight: 700; color: #92400e;">💥 Dano em ${DOM.escape(this.partidaAtual.robo1)}:</label>
+            <label style="font-weight: 700; color: #92400e;">💥 Dano em ${DOM.escape(
+              this.partidaAtual.robo1
+            )}:</label>
             <select id="danoR1" style="border: 2px solid #f59e0b;">
-              ${NIVEIS_DANO.map((nivel) => `<option value="${nivel}">${nivel}</option>`). join("")}
+              ${NIVEIS_DANO.map(
+                (nivel) => `<option value="${nivel}">${nivel}</option>`
+              ).join("")}
             </select>
           </div>
           <div>
-            <label style="font-weight: 700; color: #92400e;">💥 Dano em ${DOM.escape(this.partidaAtual.robo2)}:</label>
+            <label style="font-weight: 700; color: #92400e;">💥 Dano em ${DOM.escape(
+              this.partidaAtual.robo2
+            )}:</label>
             <select id="danoR2" style="border: 2px solid #f59e0b;">
-              ${NIVEIS_DANO.map((nivel) => `<option value="${nivel}">${nivel}</option>`).join("")}
+              ${NIVEIS_DANO.map(
+                (nivel) => `<option value="${nivel}">${nivel}</option>`
+              ).join("")}
             </select>
           </div>
         </div>
@@ -174,13 +194,17 @@ const CombateJurado = {
           </p>
           <div style="display: flex; gap: 20px; justify-content: center; align-items: center;">
             <div style="text-align: center;">
-              <div style="font-weight: 600; color: #6b7280; margin-bottom: 4px;">${DOM.escape(this.partidaAtual.robo1)}</div>
+              <div style="font-weight: 600; color: #6b7280; margin-bottom: 4px;">${DOM.escape(
+                this.partidaAtual.robo1
+              )}</div>
               <div id="previewPtsR1" style="font-size: 36px; font-weight: 900; color: #10b981;">9</div>
               <small style="color: #6b7280;">pts de dano</small>
             </div>
             <div style="font-size: 24px; color: #9ca3af;">VS</div>
             <div style="text-align: center;">
-              <div style="font-weight: 600; color: #6b7280; margin-bottom: 4px;">${DOM.escape(this.partidaAtual.robo2)}</div>
+              <div style="font-weight: 600; color: #6b7280; margin-bottom: 4px;">${DOM.escape(
+                this.partidaAtual.robo2
+              )}</div>
               <div id="previewPtsR2" style="font-size: 36px; font-weight: 900; color: #10b981;">9</div>
               <small style="color: #6b7280;">pts de dano</small>
             </div>
@@ -200,7 +224,7 @@ const CombateJurado = {
 
   renderAguardandoDano() {
     const juradoResponsavel = this.partidaAtual.juradoResponsavelDano;
-    
+
     return `
       <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px;">
         <h4 style="margin: 0 0 12px 0; color: #92400e;">⏳ Aguardando Jurado ${juradoResponsavel}</h4>
@@ -227,13 +251,15 @@ const CombateJurado = {
 
   renderInfoAgressividade() {
     const juradoKey = `jurado${this.juradoId}`;
-    const totalJulgado = this.partidaAtual. julgamentos[juradoKey].length;
-    
+    const totalJulgado = this.partidaAtual.julgamentos[juradoKey].length;
+
     return `
       <div style="background: #e0f2fe; border: 2px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 20px;">
         <h4 style="margin: 0 0 12px 0; color: #1e40af;">⚡ Julgue APENAS a Agressividade</h4>
         <p style="margin: 0; color: #1e3a8a; font-size: 14px; line-height: 1.6;">
-          📊 Progresso: <strong>${totalJulgado > 0 ? '1/1 round julgado' : '0/1 rounds julgados'}</strong><br><br>
+          📊 Progresso: <strong>${
+            totalJulgado > 0 ? "1/1 round julgado" : "0/1 rounds julgados"
+          }</strong><br><br>
           
           <strong>Instruções:</strong><br>
           1. Avalie a agressividade do único round (5x0, 4x1, 3x2, etc.)<br>
@@ -247,7 +273,7 @@ const CombateJurado = {
 
   renderDanoFixo() {
     const juradoResponsavel = this.partidaAtual.juradoResponsavelDano;
-    
+
     return `
       <div style="background: #dcfce7; border: 2px solid #10b981; border-radius: 10px; padding: 16px; margin-bottom: 20px;">
         <h4 style="margin: 0 0 12px 0; color: #065f46;">✅ Dano Consensual Definido (pelo Jurado ${juradoResponsavel})</h4>
@@ -258,20 +284,28 @@ const CombateJurado = {
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
           <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #86efac;">
-            <div style="font-weight: 700; color: #1f2937; margin-bottom: 4px;">🤖 ${DOM.escape(this.partidaAtual.robo1)}</div>
+            <div style="font-weight: 700; color: #1f2937; margin-bottom: 4px;">🤖 ${DOM.escape(
+              this.partidaAtual.robo1
+            )}</div>
             <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">
-              Dano: <strong style="color: #047857;">${this.partidaAtual.danoConsensual.danoR1}</strong>
+              Dano: <strong style="color: #047857;">${
+                this.partidaAtual.danoConsensual.danoR1
+              }</strong>
             </div>
             <div style="font-size: 28px; font-weight: 900; color: #10b981;">
-              ${this.partidaAtual. danoConsensual.pontosDanoR1} pts
+              ${this.partidaAtual.danoConsensual.pontosDanoR1} pts
             </div>
             <small style="color: #6b7280;">dano total</small>
           </div>
           
           <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #86efac;">
-            <div style="font-weight: 700; color: #1f2937; margin-bottom: 4px;">🤖 ${DOM.escape(this.partidaAtual.robo2)}</div>
+            <div style="font-weight: 700; color: #1f2937; margin-bottom: 4px;">🤖 ${DOM.escape(
+              this.partidaAtual.robo2
+            )}</div>
             <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">
-              Dano: <strong style="color: #047857;">${this.partidaAtual.danoConsensual.danoR2}</strong>
+              Dano: <strong style="color: #047857;">${
+                this.partidaAtual.danoConsensual.danoR2
+              }</strong>
             </div>
             <div style="font-size: 28px; font-weight: 900; color: #10b981;">
               ${this.partidaAtual.danoConsensual.pontosDanoR2} pts
@@ -297,13 +331,25 @@ const CombateJurado = {
       html += `
         <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; border: 1px solid #86efac;">
           <p style="margin: 0; color: #166534; font-weight: 600;">
-            ✔ Rodada já julgada
+            ✔ Seu ponto foi registrado!
           </p>
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #6b7280;">
-            ${DOM.escape(this.partidaAtual.robo1)}: <strong>${julgamento.pontosR1 !== null ? julgamento.pontosR1 : 'Aguardando dano'}</strong> pts 
-            ${julgamento.pontosR1 !== null ? `(Dano: ${julgamento.pontosDanoR1} + Agr: ${julgamento.pontosAgrR1})` : `(Agr: ${julgamento.pontosAgrR1})`}<br>
-            ${DOM.escape(this.partidaAtual.robo2)}: <strong>${julgamento.pontosR2 !== null ?  julgamento.pontosR2 : 'Aguardando dano'}</strong> pts 
-            ${julgamento.pontosR2 !== null ? `(Dano: ${julgamento.pontosDanoR2} + Agr: ${julgamento.pontosAgrR2})` : `(Agr: ${julgamento.pontosAgrR2})`}
+            ${DOM.escape(this.partidaAtual.robo1)}: <strong>${
+        julgamento.pontosR1 !== null ? julgamento.pontosR1 : "Aguardando dano"
+      }</strong> pts 
+            ${
+              julgamento.pontosR1 !== null
+                ? `(Dano: ${julgamento.pontosDanoR1} + Agr: ${julgamento.pontosAgrR1})`
+                : `(Agr: ${julgamento.pontosAgrR1})`
+            }<br>
+            ${DOM.escape(this.partidaAtual.robo2)}: <strong>${
+        julgamento.pontosR2 !== null ? julgamento.pontosR2 : "Aguardando dano"
+      }</strong> pts 
+            ${
+              julgamento.pontosR2 !== null
+                ? `(Dano: ${julgamento.pontosDanoR2} + Agr: ${julgamento.pontosAgrR2})`
+                : `(Agr: ${julgamento.pontosAgrR2})`
+            }
           </p>
         </div>
       `;
@@ -354,7 +400,7 @@ const CombateJurado = {
           <ul style="margin: 0; padding-left: 20px; color: #1e3a8a; font-size: 14px;">
             <li>Existe apenas 1 rodada para julgar</li>
             <li>Você julga apenas a <strong>Agressividade</strong></li>
-            <li>Após todos os jurados julgarem, o último definirá o dano</li>
+            <li>Após todos os jurados enviarem os pontos, o último definirá o dano</li>
             <li>O dano será aplicado automaticamente e a partida será finalizada</li>
           </ul>
         </div>
@@ -369,7 +415,7 @@ const CombateJurado = {
     const danoR2 = document.getElementById("danoR2").value;
 
     const [ptsR1, ptsR2] = dataManager.calcularPontosDano(danoR1, danoR2);
-    
+
     document.getElementById("previewPtsR1").textContent = ptsR1;
     document.getElementById("previewPtsR2").textContent = ptsR2;
   },
@@ -386,13 +432,16 @@ const CombateJurado = {
         danoR2
       );
 
-      const [pontosDanoR1, pontosDanoR2] = dataManager.calcularPontosDano(danoR1, danoR2);
+      const [pontosDanoR1, pontosDanoR2] = dataManager.calcularPontosDano(
+        danoR1,
+        danoR2
+      );
 
       toast.success(
         `✅ Dano Consensual Definido e Partida Finalizada!\n\n` +
-        `${this.partidaAtual.robo1}: ${danoR1} (${pontosDanoR1} pts)\n` +
-        `${this.partidaAtual.robo2}: ${danoR2} (${pontosDanoR2} pts)\n\n` +
-        `Todos os julgamentos foram atualizados! `,
+          `${this.partidaAtual.robo1}: ${danoR1} (${pontosDanoR1} pts)\n` +
+          `${this.partidaAtual.robo2}: ${danoR2} (${pontosDanoR2} pts)\n\n` +
+          `Todos os julgamentos foram atualizados! `,
         6000
       );
 
@@ -428,10 +477,10 @@ const CombateJurado = {
 
       const [pontosAgrR1, pontosAgrR2] = agressividade
         .split(",")
-        . map((p) => parseFloat(p));
+        .map((p) => parseFloat(p));
 
       // Salva apenas agressividade
-      dataManager. addJulgamentoAgressividade(
+      dataManager.addJulgamentoAgressividade(
         this.partidaAtual.id,
         this.juradoId,
         pontosAgrR1,
@@ -440,28 +489,30 @@ const CombateJurado = {
 
       toast.success(
         `Rodada julgada!\n\n` +
-        `Agressividade registrada:\n` +
-        `${this.partidaAtual.robo1}: ${pontosAgrR1} pts\n` +
-        `${this.partidaAtual.robo2}: ${pontosAgrR2} pts`,
+          `Agressividade registrada:\n` +
+          `${this.partidaAtual.robo1}: ${pontosAgrR1} pts\n` +
+          `${this.partidaAtual.robo2}: ${pontosAgrR2} pts`,
         4000
       );
 
       // Recarrega partida
       this.partidaAtual = dataManager.getPartida(this.partidaAtual.id);
-      this. renderFormularioJulgamento();
+      this.renderFormularioJulgamento();
 
       // Verifica se este jurado se tornou o responsável pelo dano
-      if (dataManager.isJuradoResponsavelDano(this.partidaAtual.id, this.juradoId)) {
+      if (
+        dataManager.isJuradoResponsavelDano(this.partidaAtual.id, this.juradoId)
+      ) {
         toast.info(
           `🎯 Você foi o último a completar!\n\n` +
-          `Agora você deve conversar com os outros jurados\n` +
-          `e definir o dano consensual para finalizar a partida. `,
+            `Agora você deve conversar com os outros jurados\n` +
+            `e definir o dano consensual para finalizar a partida. `,
           7000
         );
       } else if (this.partidaAtual.status === "aguardando_dano") {
         toast.info(
           `✅ Sua avaliação está completa!\n\n` +
-          `Aguarde o Jurado ${this.partidaAtual.juradoResponsavelDano} definir o dano consensual.`,
+            `Aguarde o Jurado ${this.partidaAtual.juradoResponsavelDano} definir o dano consensual.`,
           5000
         );
       }
